@@ -1,0 +1,63 @@
+.search__container {
+  color: #fff;
+  padding: 50px 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  z-index: 100;
+}
+.switch label {
+  border: 1px solid #fff;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #777;
+  transition: all 0.2s;
+}
+.switch label:not(:first-of-type) {
+  border-left: 0;
+}
+
+.switch label:hover {
+  background-color: #333;
+}
+input[name='typeselect'] {
+  display: none;
+}
+
+/* The checked buttons label style */
+input[name='typeselect']:checked + label {
+  background-color: #70613f;
+}
+
+.search__input {
+  display: flex;
+  flex: 0.5;
+  position: relative;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  margin-left: 10px;
+  border-radius: 33px;
+}
+.search__input > input {
+  display: flex;
+  border: none;
+  background-color: transparent;
+  outline-width: 0;
+}
+.fa-serach {
+  color: black;
+  position: absolute;
+  right: 1%;
+  cursor: pointer;
+}
+@media screen and (max-width: 960px) {
+  .search__container {
+    flex-direction: column;
+  }
+}
