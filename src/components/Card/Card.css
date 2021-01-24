@@ -1,0 +1,29 @@
+.card__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+table.GeneratedTable {
+  width: 50%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  border-width: 1px;
+  border-color: #3a3131;
+  border-style: solid;
+  color: #000000;
+}
+
+table.GeneratedTable td,
+table.GeneratedTable th {
+  border-width: 1px;
+  border-color: #3a3131;
+  border-style: solid;
+  padding: 3px;
+}
+
+table.GeneratedTable thead {
+  background-color: #ffffff;
+}

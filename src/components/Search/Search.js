@@ -1,15 +1,22 @@
 import React, { useState } from 'react'
 import './Search.css'
 import { FaSearch } from 'react-icons/fa'
+import { useGlobalContext } from '../../context'
 function Search() {
   const [radio, setRadio] = useState({ selectedOption: 'Player' })
+  const { setQuery, nameRef, setIsSubmitted } = useGlobalContext()
 
-  const handleOptionChange = (event) => {
+  const handleOptionChange = (e) => {
     setRadio({
-      selectedOption: event.target.value,
+      selectedOption: e.target.value,
     })
   }
-  console.log(radio)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const name = nameRef.current.value
+    setQuery(name)
+    setIsSubmitted(true)
+  }
   return (
     <div
       className='search__container'
@@ -37,8 +44,8 @@ function Search() {
         />
         <label htmlFor='clanTab'>Clan</label>
       </div>
-      <form className='search__input'>
-        <FaSearch className='fa-serach' />
+      <form className='search__input' onSubmit={handleSubmit}>
+        <FaSearch className='fa-serach' onClick={handleSubmit} />
         <input
           type='text'
           placeholder={
@@ -46,6 +53,7 @@ function Search() {
               ? 'Search Players'
               : 'Search Clans'
           }
+          ref={nameRef}
         />
       </form>
     </div>
