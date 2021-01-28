@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 const API_ID = `https://api.worldoftanks.eu/wot/account/info/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
-const PLAYER_NAME = `https://api.worldoftanks.eu/wot/account/list/?application_id=${process.env.REACT_APP_APP_ID}&search=`
+const PLAYER_NAME = `https://api.worldoftanks.eu/wot/account/list/?application_id=${process.env.REACT_APP_APP_ID}&type=exact&search=`
+const PLAYER_VEHICLES = `https://api.worldoftanks.eu/wot/account/tanks/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
 
 const useFetch = (urlParams) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState({ show: false, msg: '' })
   const [data, setData] = useState([])
-
-  console.log(data)
+  const [playerVehicles, setPlayerVehicles] = useState([])
+  const [tankIds, setTankIds] = useState([])
 
   useEffect(() => {
     const fetchPlayer = async (url) => {
@@ -19,37 +19,47 @@ const useFetch = (urlParams) => {
           return axios.get(`${API_ID}${response.data.data[0].account_id}`)
         })
         .then((response) => {
+          console.log(response)
           const id = response.config.url.slice(-9)
           setData(response.data.data[id])
           setIsLoading(false)
+          return response
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log(error)
         })
     }
 
-    // const fetchPlayerData = async (url) => {
-    //   setIsLoading(true)
-    //   try {
-    //     const response = await fetch(url)
-    //     const responseData = await response.json()
-    //     if (responseData.status === 'ok') {
-    //       setPlayerData(responseData.data[id])
-    //       setError({ show: false, msg: '' })
-    //     } else {
-    //       setError({ show: true, msg: responseData.Error })
-    //     }
-    //     setIsLoading(false)
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // }
-    // const id = data.map((data) => data.account_id)
     fetchPlayer(`${PLAYER_NAME}${urlParams}`)
-    // fetchPlayerData(`${API_ID}${id}`)
   }, [urlParams])
 
+  useEffect(() => {
+    const fetchPlayerVehicles = async (url) => {
+      setIsLoading(true)
+      axios
+        .get(url)
+        .then((response) => {
+          return axios.get(
+            `${PLAYER_VEHICLES}${response.data.data[0].account_id}`
+          )
+        })
+        .then((response) => {
+          console.log(response)
+          const id = response.config.url.slice(-9)
+          setPlayerVehicles(response.data.data[id])
+          const tanksids = response.data.data[id].map((item) => item.tank_id)
+          setTankIds(tanksids)
+        })
+    }
+    fetchPlayerVehicles(`${PLAYER_NAME}${urlParams}`)
+  }, [urlParams])
   return {
     isLoading,
-    error,
     data,
+    playerVehicles,
   }
 }
 export default useFetch
