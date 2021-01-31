@@ -15,6 +15,7 @@ import {
   GET_ALL_VEHICLES,
   ERROR_ALL_VEHICLES,
 } from './constants'
+import { FaComments } from 'react-icons/fa'
 const API_ID = `https://api.worldoftanks.eu/wot/account/info/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
 const PLAYER_NAME = `https://api.worldoftanks.eu/wot/account/list/?application_id=${process.env.REACT_APP_APP_ID}&type=exact&search=`
 const PLAYER_VEHICLES = `https://api.worldoftanks.eu/wot/account/tanks/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
@@ -29,80 +30,59 @@ const useFetch = (urlParams) => {
     loading: true,
     loadingVehicles: true,
   })
-
-  useEffect(() => {
-    const cancelToken = axios.CancelToken.source()
-    dispatch({ type: MAKE_REQUEST_PLAYER_INFO })
-    axios
-      .get(`${PLAYER_NAME}${urlParams}`, {
-        cancelToken: cancelToken.token,
+  const getPlayerData = async () => {
+    try {
+      dispatch({ type: MAKE_REQUEST_PLAYER_INFO })
+      const playerId = await fetch(`${PLAYER_NAME}${urlParams}`).then((res) =>
+        res.json()
+      )
+      const playerInfo = await fetch(
+        `${API_ID}${playerId.data[0].account_id}`
+      ).then((res) => res.json())
+      dispatch({
+        type: GET_PLAYER_INFO,
+        payload: { playerInfo: playerInfo.data[playerId.data[0].account_id] },
       })
-      .then((res) => {
-        return axios.get(`${API_ID}${res.data.data[0].account_id}`)
+      dispatch({ type: MAKE_REQUEST_PLAYER_VEHICLES })
+      const playerVehicles = await fetch(
+        `${PLAYER_VEHICLES}${playerId.data[0].account_id}`
+      ).then((res) => res.json())
+      dispatch({
+        type: GET_PLAYER_VEHICLES,
+        payload: {
+          playerVehicles: playerVehicles.data[playerId.data[0].account_id],
+        },
       })
-      .then((res) => {
-        const id = res.config.url.slice(-9)
-        dispatch({
-          type: GET_PLAYER_INFO,
-          payload: { playerInfo: res.data.data[id] },
-        })
+      dispatch({ type: MAKE_REQUEST_PLAYER_VEHICLES_STATS })
+      const playerVehiclesStats = await fetch(
+        `${PLAYER_VEHICLE_STATISTIC}${playerId.data[0].account_id}`
+      ).then((res) => res.json())
+      console.log(playerVehiclesStats)
+      dispatch({
+        type: GET_PLAYER_VEHICLES_STATS,
+        payload: {
+          playerVehiclesStats:
+            playerVehiclesStats.data[playerId.data[0].account_id],
+        },
       })
-      .catch((e) => {
-        if (axios.isCancel(e)) return
-        dispatch({ type: ERROR_PLAYER_INFO, payload: { error: e } })
+      dispatch({ type: MAKE_REQUEST_ALL_VEHICLES })
+      const allVehicles = await fetch(`${ALL_VEHICLES}`).then((res) =>
+        res.json()
+      )
+      console.log(allVehicles)
+      dispatch({
+        type: GET_ALL_VEHICLES,
+        payload: {
+          allVehicles: allVehicles.data,
+        },
       })
-
-    const cancelToken3 = axios.CancelToken.source()
-    dispatch({ type: MAKE_REQUEST_PLAYER_VEHICLES_STATS })
-    axios
-      .get(`${PLAYER_NAME}${urlParams}`)
-      .then((res) => {
-        return axios.get(
-          `${PLAYER_VEHICLE_STATISTIC}${res.data.data[0].account_id}`,
-          {
-            cancelToken: cancelToken3.token,
-          }
-        )
-      })
-      .then((res) => {
-        const id = res.config.url.slice(-9)
-        dispatch({
-          type: GET_PLAYER_VEHICLES_STATS,
-          payload: { playerVehiclesStats: res.data.data[id] },
-        })
-      })
-      .catch((e) => {
-        if (axios.isCancel(e)) return
-        dispatch({ type: ERROR_PLAYER_VEHICLES_STATS, payload: { error: e } })
-      })
-
-    return () => {
-      cancelToken.cancel()
-
-      cancelToken3.cancel()
+    } catch (error) {
+      dispatch({ type: ERROR_PLAYER_INFO, payload: { error } })
     }
+  }
+  useEffect(() => {
+    getPlayerData()
   }, [urlParams])
-  useEffect(() => {
-    const cancelToken4 = axios.CancelToken.source()
-    dispatch({ type: MAKE_REQUEST_ALL_VEHICLES })
-    axios
-      .get(`${ALL_VEHICLES}`, {
-        cancelToken: cancelToken4.token,
-      })
-      .then((res) => {
-        dispatch({
-          type: GET_ALL_VEHICLES,
-          payload: { allVehicles: res.data.data },
-        })
-      })
-      .catch((e) => {
-        if (axios.isCancel(e)) return
-        dispatch({ type: ERROR_ALL_VEHICLES, payload: { error: e } })
-      })
-    return () => {
-      cancelToken4.cancel()
-    }
-  }, [])
 
   return {
     state,
