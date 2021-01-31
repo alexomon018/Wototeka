@@ -1,13 +1,11 @@
 import React from 'react'
 import { FaBars } from 'react-icons/fa'
 import './Card.css'
-import CardTanks from '../CardTanks/CardTanks'
 
-function Card({ data }) {
+function Card({ data, state }) {
   const {
     statistics: { all },
   } = data
-  console.log(all)
   const date = new Date(1611863450)
   console.log(date.toUTCString())
   return (
@@ -123,7 +121,6 @@ function Card({ data }) {
           </tbody>
         </table>
       </div>
-      {/* <CardTanks /> */}
     </div>
   )
 }

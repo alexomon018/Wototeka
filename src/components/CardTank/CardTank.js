@@ -1,7 +1,7 @@
 import React from 'react'
 function CardTank({ singleVehicle, tankInfo }) {
-  const { all } = singleVehicle
-  console.log(singleVehicle)
+  const { all, mark_of_mastery, max_frags, max_xp } = singleVehicle
+
   return (
     <div className='card__container'>
       <table className='GeneratedTable'>
@@ -24,7 +24,7 @@ function CardTank({ singleVehicle, tankInfo }) {
         <tbody>
           <tr>
             <td>{tankInfo.name}</td>
-            <td>{singleVehicle.mark_of_mastery}</td>
+            <td>{mark_of_mastery}</td>
             <td>{tankInfo.type}</td>
             <td>{tankInfo.nation}</td>
             <td>{tankInfo.tier}</td>
@@ -32,8 +32,8 @@ function CardTank({ singleVehicle, tankInfo }) {
             <td>{(all.xp / all.battles).toFixed()}</td>
             <td>{all.battles}</td>
             <td>{((all.wins / all.battles) * 100).toFixed(2)}%</td>
-            <td>{singleVehicle.max_frags}</td>
-            <td>{singleVehicle.max_xp}</td>
+            <td>{max_frags}</td>
+            <td>{max_xp}</td>
             <td>Cell</td>
           </tr>
         </tbody>

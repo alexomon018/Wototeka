@@ -7,6 +7,7 @@ const AppProvider = ({ children }) => {
   const nameRef = useRef()
   const [isSubmitted, setIsSubmitted] = useState(false)
   const { state } = useFetch(`${query}`)
+  console.log(state.playerVehiclesStats)
   return (
     <AppContext.Provider
       value={{

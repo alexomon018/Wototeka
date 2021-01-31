@@ -2,8 +2,11 @@ import React from 'react'
 import './CardTanks.css'
 import CardTank from '../CardTank/CardTank'
 import { useGlobalContext } from '../../context'
+import Loader from '../Loader/Loader'
 function CardTanks() {
-  const { playerVehiclesStats, tanks } = useGlobalContext()
+  const {
+    state: { playerVehiclesStats, allVehicles },
+  } = useGlobalContext()
 
   return (
     <div>
@@ -12,7 +15,7 @@ function CardTanks() {
         <CardTank
           key={`${singleVehicle.account_id}${singleVehicle.tank_id}`}
           singleVehicle={singleVehicle}
-          tankInfo={tanks[singleVehicle.tank_id]}
+          tankInfo={allVehicles[singleVehicle.tank_id]}
         />
       ))}
     </div>
