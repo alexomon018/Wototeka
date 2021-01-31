@@ -4,11 +4,16 @@ import Search from '../../components/Search/Search'
 import Card from '../../components/Card/Card'
 import { useGlobalContext } from '../../context'
 function Home() {
-  const { isLoading, data, isSubmitted } = useGlobalContext()
+  const { state, isSubmitted } = useGlobalContext()
   return (
     <div>
       <Search />
-      {isSubmitted && (isLoading === true ? <Loader /> : <Card data={data} />)}
+      {isSubmitted &&
+        (state.loading === true ? (
+          <Loader />
+        ) : (
+          <Card data={state.playerInfo} />
+        ))}
     </div>
   )
 }

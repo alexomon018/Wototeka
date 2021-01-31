@@ -1,5 +1,4 @@
 import React from 'react'
-
 function CardTank({ singleVehicle, tankInfo }) {
   const { all } = singleVehicle
   console.log(singleVehicle)

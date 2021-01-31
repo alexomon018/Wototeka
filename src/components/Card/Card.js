@@ -123,7 +123,7 @@ function Card({ data }) {
           </tbody>
         </table>
       </div>
-      <CardTanks />
+      {/* <CardTanks /> */}
     </div>
   )
 }
