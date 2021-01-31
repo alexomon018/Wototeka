@@ -1,9 +1,9 @@
 import React from 'react'
 import { FaBars } from 'react-icons/fa'
 import './Card.css'
+import CardTanks from '../CardTanks/CardTanks'
 
 function Card({ data }) {
-  console.log(data)
   const {
     statistics: { all },
   } = data
@@ -39,7 +39,7 @@ function Card({ data }) {
           <thead>
             <tr>
               <td></td>
-              <td colspan='2'>Total</td>
+              <td colSpan='2'>Total</td>
             </tr>
           </thead>
           <tbody>
@@ -87,8 +87,8 @@ function Card({ data }) {
             </tr>
             <tr>
               <td>Damage dealt</td>
-              <td>{all.damage_dealt}</td>
-              <td>{(all.damage_dealt / all.battles).toFixed(2)}</td>
+
+              <td colSpan='2'>{(all.damage_dealt / all.battles).toFixed(2)}</td>
             </tr>
             <tr>
               <td>Capture Poins</td>
@@ -102,27 +102,28 @@ function Card({ data }) {
             </tr>
             <tr>
               <td>Average Expirience</td>
-              <td>{all.battle_avg_xp}</td>
+              <td colSpan='2'>{all.battle_avg_xp}</td>
             </tr>
             <tr>
               <td>Max Damage</td>
-              <td>{all.max_damage}</td>
+              <td colSpan='2'>{all.max_damage}</td>
             </tr>
             <tr>
               <td>Max XP</td>
-              <td>{all.max_xp}</td>
+              <td colSpan='2'>{all.max_xp}</td>
             </tr>
             <tr>
               <td>WN7</td>
-              <td>Cell</td>
+              <td colSpan='2'>Cell</td>
             </tr>
             <tr>
               <td>WN8</td>
-              <td>Cell</td>
+              <td colSpan='2'>Cell</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <CardTanks />
     </div>
   )
 }

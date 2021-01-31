@@ -6,8 +6,13 @@ const AppProvider = ({ children }) => {
   const [query, setQuery] = useState('santimania')
   const nameRef = useRef()
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const { isLoading, data, playerVehicles } = useFetch(`${query}`)
-  console.log(playerVehicles)
+  const {
+    isLoading,
+    data,
+    playerVehicles,
+    playerVehiclesStats,
+    tanks,
+  } = useFetch(`${query}`)
   return (
     <AppContext.Provider
       value={{
@@ -19,6 +24,8 @@ const AppProvider = ({ children }) => {
         isSubmitted,
         setIsSubmitted,
         playerVehicles,
+        playerVehiclesStats,
+        tanks,
       }}
     >
       {children}
