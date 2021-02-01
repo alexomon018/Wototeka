@@ -1,5 +1,4 @@
 import { useEffect, useReducer } from 'react'
-import axios from 'axios'
 import reducer from './reducer'
 import {
   MAKE_REQUEST_PLAYER_INFO,
@@ -15,7 +14,6 @@ import {
   GET_ALL_VEHICLES,
   ERROR_ALL_VEHICLES,
 } from './constants'
-import { FaComments } from 'react-icons/fa'
 const API_ID = `https://api.worldoftanks.eu/wot/account/info/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
 const PLAYER_NAME = `https://api.worldoftanks.eu/wot/account/list/?application_id=${process.env.REACT_APP_APP_ID}&type=exact&search=`
 const PLAYER_VEHICLES = `https://api.worldoftanks.eu/wot/account/tanks/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
@@ -57,7 +55,6 @@ const useFetch = (urlParams) => {
       const playerVehiclesStats = await fetch(
         `${PLAYER_VEHICLE_STATISTIC}${playerId.data[0].account_id}`
       ).then((res) => res.json())
-      console.log(playerVehiclesStats)
       dispatch({
         type: GET_PLAYER_VEHICLES_STATS,
         payload: {
