@@ -25,7 +25,7 @@ const useFetch = (urlParams) => {
     loading: true,
     loadingVehicles: true,
   })
-  const getPlayerData = async () => {
+  const getPlayerData = async (urlParams) => {
     try {
       dispatch({ type: MAKE_REQUEST_PLAYER_INFO })
       const playerId = await fetch(`${PLAYER_NAME}${urlParams}`).then((res) =>
@@ -74,7 +74,7 @@ const useFetch = (urlParams) => {
     }
   }
   useEffect(() => {
-    getPlayerData()
+    getPlayerData(urlParams)
   }, [urlParams])
 
   return {
