@@ -6,13 +6,10 @@ import {
   ERROR_PLAYER_INFO,
   MAKE_REQUEST_PLAYER_VEHICLES,
   GET_PLAYER_VEHICLES,
-  ERROR_PLAYER_VEHICLES,
   MAKE_REQUEST_PLAYER_VEHICLES_STATS,
   GET_PLAYER_VEHICLES_STATS,
-  ERROR_PLAYER_VEHICLES_STATS,
   MAKE_REQUEST_ALL_VEHICLES,
   GET_ALL_VEHICLES,
-  ERROR_ALL_VEHICLES,
 } from './constants'
 const API_ID = `https://api.worldoftanks.eu/wot/account/info/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
 const PLAYER_NAME = `https://api.worldoftanks.eu/wot/account/list/?application_id=${process.env.REACT_APP_APP_ID}&type=exact&search=`
@@ -66,7 +63,6 @@ const useFetch = (urlParams) => {
       const allVehicles = await fetch(`${ALL_VEHICLES}`).then((res) =>
         res.json()
       )
-      console.log(allVehicles)
       dispatch({
         type: GET_ALL_VEHICLES,
         payload: {

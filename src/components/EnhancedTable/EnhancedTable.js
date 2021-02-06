@@ -1,19 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import clsx from 'clsx'
 import './EnhancedTable.css'
 import { useGlobalContext } from '../../context'
-import { lighten, makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import TablePagination from '@material-ui/core/TablePagination'
+import EnhancedTableHead from './EnhancedTableHead'
+import EnhancedTableToolbar from './EnhacedTableToolbar'
 import TableRow from '@material-ui/core/TableRow'
-import TableSortLabel from '@material-ui/core/TableSortLabel'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
@@ -42,145 +37,6 @@ function stableSort(array, comparator) {
     return a[1] - b[1]
   })
   return stabilizedThis.map((el) => el[0])
-}
-
-const headCells = [
-  {
-    id: 'tankName',
-    numeric: false,
-    disablePadding: true,
-    label: 'Tank Name',
-  },
-  { id: 'mastery', numeric: true, disablePadding: false, label: 'M' },
-  { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
-  { id: 'nation', numeric: false, disablePadding: false, label: 'Nation' },
-  { id: 'tier', numeric: true, disablePadding: false, label: 'Tier' },
-  {
-    id: 'averageDamage',
-    numeric: true,
-    disablePadding: false,
-    label: 'Average Damage',
-  },
-  {
-    id: 'averageXp',
-    numeric: true,
-    disablePadding: false,
-    label: 'Average Xp',
-  },
-  { id: 'battles', numeric: true, disablePadding: false, label: 'Battles' },
-  {
-    id: 'victories',
-    numeric: true,
-    disablePadding: false,
-    label: 'Victories %',
-  },
-  { id: 'maxKills', numeric: true, disablePadding: false, label: 'Max Kills' },
-  { id: 'maxXp', numeric: true, disablePadding: false, label: 'Max Xp' },
-]
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell)
-
-function EnhancedTableHead(props) {
-  const {
-    classes,
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property)
-  }
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding='checkbox'></TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  )
-}
-
-EnhancedTableHead.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-}
-
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-  },
-}))
-
-const EnhancedTableToolbar = (props) => {
-  const classes = useToolbarStyles()
-  const { numSelected } = props
-
-  return (
-    <Toolbar>
-      <Typography
-        className={classes.title}
-        variant='h6'
-        id='tableTitle'
-        component='div'
-      >
-        Total Tanks : {numSelected}
-      </Typography>
-    </Toolbar>
-  )
-}
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -212,9 +68,8 @@ export default function EnhancedTable() {
   const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('tankName')
   const [selected, setSelected] = React.useState([])
-  const [page, setPage] = React.useState(0)
   const [dense, setDense] = React.useState(false)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+
   const {
     state: { playerVehiclesStats, allVehicles },
   } = useGlobalContext()
@@ -265,7 +120,6 @@ export default function EnhancedTable() {
     )
   })
 
-  console.log(rows)
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -286,9 +140,6 @@ export default function EnhancedTable() {
   }
 
   const isSelected = (name) => selected.indexOf(name) !== -1
-
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
   return (
     <div className='enhancedTable__container'>
@@ -326,12 +177,7 @@ export default function EnhancedTable() {
                         selected={isItemSelected}
                       >
                         <TableCell padding='checkbox'></TableCell>
-                        <TableCell
-                          component='th'
-                          id={labelId}
-                          scope='row'
-                          padding='none'
-                        >
+                        <TableCell id={labelId} scope='row' padding='none'>
                           {row.tankName}
                         </TableCell>
                         <TableCell align='right'> {row.m}</TableCell>
@@ -350,11 +196,6 @@ export default function EnhancedTable() {
                       </TableRow>
                     )
                   }
-                )}
-                {emptyRows > 0 && (
-                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
                 )}
               </TableBody>
             </Table>
