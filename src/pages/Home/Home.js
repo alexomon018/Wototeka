@@ -3,7 +3,7 @@ import Loader from '../../components/Loader/Loader'
 import Search from '../../components/Search/Search'
 import Card from '../../components/Card/Card'
 import { useGlobalContext } from '../../context'
-import TableTanks from '../../components/TableTanks/TableTanks'
+import EnhancedTable from '../../components/EnhancedTable/EnhancedTable'
 function Home() {
   const { state, isSubmitted } = useGlobalContext()
   return (
@@ -16,7 +16,7 @@ function Home() {
           <Card data={state.playerInfo} />
         ))}
       {isSubmitted &&
-        (state.loadingVehicles === true ? <Loader /> : <TableTanks />)}
+        (state.loadingVehicles === true ? <Loader /> : <EnhancedTable />)}
     </div>
   )
 }
