@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import { showType, showNation, getComparator, stableSort } from './utils'
+import { AiFillStar } from 'react-icons/ai'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +52,7 @@ export default function EnhancedTable() {
   const createData = (
     img,
     tankName,
+    premium,
     m,
     type,
     nation,
@@ -65,6 +67,7 @@ export default function EnhancedTable() {
     return {
       img,
       tankName,
+      premium,
       m,
       type,
       nation,
@@ -77,7 +80,7 @@ export default function EnhancedTable() {
       maxXp,
     }
   }
-
+  console.log(allVehicles)
   const stats = playerVehiclesStats.map((singleVehicle) => {
     return singleVehicle
   })
@@ -85,6 +88,7 @@ export default function EnhancedTable() {
     return createData(
       allVehicles[stat.tank_id].images.contour_icon,
       allVehicles[stat.tank_id].name,
+      allVehicles[stat.tank_id].is_premium,
       stat.mark_of_mastery,
       allVehicles[stat.tank_id].type,
       allVehicles[stat.tank_id].nation,
@@ -158,7 +162,8 @@ export default function EnhancedTable() {
                           <img src={row.img} alt={row.tankName} />
                         </TableCell>
                         <TableCell id={labelId} scope='row' padding='none'>
-                          {row.tankName}
+                          {row.tankName}{' '}
+                          {row.premium && <AiFillStar size='1em' />}
                         </TableCell>
                         <TableCell align='right'> {row.m}</TableCell>
                         <TableCell align='right'>
