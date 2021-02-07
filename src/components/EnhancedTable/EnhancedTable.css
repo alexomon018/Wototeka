@@ -2,3 +2,12 @@
   margin-left: 80px;
   margin-right: 80px;
 }
+.type__img {
+  width: 15px;
+}
+@media screen and (max-device-width: 480px) and (orientation: portrait) {
+  .enhancedTable__container {
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+}

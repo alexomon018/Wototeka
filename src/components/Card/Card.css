@@ -4,3 +4,9 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
+@media screen and (max-device-width: 480px) and (orientation: portrait) {
+  .card__container {
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+}

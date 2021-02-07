@@ -8,10 +8,11 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import Paper from '@material-ui/core/Paper'
 import CustomTableRow from './CustomTableRow/CustomTableRow'
+import { TableRow } from '@material-ui/core'
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 250,
   },
 })
 const StyledTableCell = withStyles((theme) => ({
@@ -23,7 +24,7 @@ const StyledTableCell = withStyles((theme) => ({
     fontSize: 14,
   },
 }))(TableCell)
-function Card({ data, state }) {
+function Card({ data }) {
   const {
     statistics: { all },
   } = data
@@ -37,10 +38,12 @@ function Card({ data, state }) {
           aria-label='a dense table'
         >
           <TableHead>
-            <StyledTableCell>{data.nickname}</StyledTableCell>
+            <TableRow>
+              <StyledTableCell>{data.nickname}</StyledTableCell>
 
-            <StyledTableCell align='right'>Total</StyledTableCell>
-            <StyledTableCell align='right'>%</StyledTableCell>
+              <StyledTableCell align='right'>Total</StyledTableCell>
+              <StyledTableCell align='right'>%</StyledTableCell>
+            </TableRow>
           </TableHead>
           <TableBody>
             <CustomTableRow name='Battles' value={all.battles} />
