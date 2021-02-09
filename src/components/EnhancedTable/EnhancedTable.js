@@ -12,7 +12,13 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
-import { showType, showNation, getComparator, stableSort } from './utils'
+import {
+  showType,
+  showNation,
+  getComparator,
+  stableSort,
+  showMastery,
+} from './utils'
 import { AiFillStar } from 'react-icons/ai'
 
 const useStyles = makeStyles((theme) => ({
@@ -40,15 +46,15 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function EnhancedTable() {
-  const classes = useStyles()
-  const [order, setOrder] = React.useState('desc')
-  const [orderBy, setOrderBy] = React.useState('tankName')
-  const [selected, setSelected] = React.useState([])
-  const [dense, setDense] = React.useState(false)
-
   const {
     state: { playerVehiclesStats, allVehicles },
   } = useGlobalContext()
+  const classes = useStyles()
+  const [order, setOrder] = React.useState('desc')
+  const [orderBy, setOrderBy] = React.useState('tankName')
+  const [dense, setDense] = React.useState(false)
+  const [searchValue, setSearchValue] = React.useState('')
+
   const createData = (
     img,
     tankName,
@@ -80,7 +86,6 @@ export default function EnhancedTable() {
       maxXp,
     }
   }
-  console.log(allVehicles)
   const stats = playerVehiclesStats.map((singleVehicle) => {
     return singleVehicle
   })
@@ -93,41 +98,50 @@ export default function EnhancedTable() {
       allVehicles[stat.tank_id].type,
       allVehicles[stat.tank_id].nation,
       allVehicles[stat.tank_id].tier,
-      Math.round(stat.all.damage_dealt / stat.all.battles),
-      Math.round(stat.all.xp / stat.all.battles),
+      Number(Number(stat.all.damage_dealt / stat.all.battles).toFixed(2)),
+      Math.floor(stat.all.xp / stat.all.battles),
       stat.all.battles,
-      Math.round((stat.all.wins / stat.all.battles) * 100),
+      Number(Number((stat.all.wins / stat.all.battles) * 100).toFixed(2)),
       stat.max_frags,
       stat.max_xp
     )
   })
-
+  const [filterData, setFilterData] = React.useState(rows)
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
   }
+  const handleSearch = (event) => {
+    const data = rows
+    let filteredDatas = []
+    filteredDatas = data.filter((e) => {
+      let mathesItems = []
+      mathesItems.push(e.tankName)
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name)
-      setSelected(newSelecteds)
-      return
-    }
-    setSelected([])
+      let retVal = true
+      mathesItems.forEach((e) => {
+        const regex = new RegExp(event.target.value, 'gi')
+        if (typeof e == 'string') retVal = e.match(regex)
+      })
+      return retVal
+    })
+    setFilterData(filteredDatas)
+    setSearchValue(event.target.value)
   }
-
   const handleChangeDense = (event) => {
     setDense(event.target.checked)
   }
-
-  const isSelected = (name) => selected.indexOf(name) !== -1
 
   return (
     <div className='enhancedTable__container'>
       <div className={classes.root}>
         <Paper className={classes.paper}>
-          <EnhancedTableToolbar numSelected={rows.length} />
+          <EnhancedTableToolbar
+            numTanks={rows.length}
+            handleSearch={handleSearch}
+            value={searchValue}
+          />
           <TableContainer>
             <Table
               className={classes.table}
@@ -137,36 +151,32 @@ export default function EnhancedTable() {
             >
               <EnhancedTableHead
                 classes={classes}
-                numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
                 rowCount={rows.length}
               />
               <TableBody>
-                {stableSort(rows, getComparator(order, orderBy)).map(
+                {stableSort(filterData, getComparator(order, orderBy)).map(
                   (row, index) => {
-                    const isItemSelected = isSelected(row.tankName)
-                    const labelId = `enhanced-table-checkbox-${index}`
-
                     return (
                       <TableRow
                         hover
-                        aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={`${row.tankName}${row.battles}`}
-                        selected={isItemSelected}
                       >
                         <TableCell>
                           <img src={row.img} alt={row.tankName} />
                         </TableCell>
-                        <TableCell id={labelId} scope='row' padding='none'>
+                        <TableCell scope='row' padding='none'>
                           {row.tankName}{' '}
                           {row.premium && <AiFillStar size='1em' />}
                         </TableCell>
-                        <TableCell align='right'> {row.m}</TableCell>
                         <TableCell align='right'>
+                          {' '}
+                          {showMastery(row.m)}
+                        </TableCell>
+                        <TableCell align='center'>
                           {' '}
                           {showType(row.type)}
                         </TableCell>
@@ -181,7 +191,7 @@ export default function EnhancedTable() {
                         </TableCell>
                         <TableCell align='right'>{row.averageXp}</TableCell>
                         <TableCell align='right'>{row.battles}</TableCell>
-                        <TableCell align='right'>{row.victories}</TableCell>
+                        <TableCell align='right'>{`${row.victories} %`}</TableCell>
                         <TableCell align='right'>{row.maxKills}</TableCell>
                         <TableCell align='right'>{row.maxXp}</TableCell>
                       </TableRow>

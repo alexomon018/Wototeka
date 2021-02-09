@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { lighten, makeStyles } from '@material-ui/core/styles'
+import { TextField } from '@material-ui/core'
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -24,9 +25,8 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }))
 
-const EnhancedTableToolbar = (props) => {
+const EnhancedTableToolbar = ({ numTanks, handleSearch, value }) => {
   const classes = useToolbarStyles()
-  const { numSelected } = props
 
   return (
     <Toolbar>
@@ -36,14 +36,15 @@ const EnhancedTableToolbar = (props) => {
         id='tableTitle'
         component='div'
       >
-        Total Tanks : {numSelected}
+        Total Tanks : {numTanks}
       </Typography>
+      <TextField placeholder='Search' onChange={handleSearch} value={value} />
     </Toolbar>
   )
 }
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
+  numTanks: PropTypes.number.isRequired,
 }
 
 export default EnhancedTableToolbar

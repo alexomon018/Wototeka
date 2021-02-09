@@ -18,6 +18,7 @@ const ALL_VEHICLES = `https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?app
 const PLAYER_VEHICLE_STATISTIC = `https://api.worldoftanks.eu/wot/tanks/stats/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
 const useFetch = (urlParams) => {
   const [state, dispatch] = useReducer(reducer, {
+    players: [],
     playerInfo: [],
     playerVehicles: [],
     playerVehiclesStats: [],

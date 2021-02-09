@@ -146,6 +146,44 @@ const showNation = (nation) => {
     )
   }
 }
+const showMastery = (m) => {
+  if (m === 1) {
+    return (
+      <img
+        className='type__img'
+        src={process.env.PUBLIC_URL + '/tankMastery/thirdClass.jpg'}
+        alt='thirdClass'
+      />
+    )
+  }
+  if (m === 2) {
+    return (
+      <img
+        className='type__img'
+        src={process.env.PUBLIC_URL + '/tankMastery/secondClass.jpg'}
+        alt='secondClass'
+      />
+    )
+  }
+  if (m === 3) {
+    return (
+      <img
+        className='type__img'
+        src={process.env.PUBLIC_URL + '/tankMastery/firstClass.jpg'}
+        alt='firstClass'
+      />
+    )
+  }
+  if (m === 4) {
+    return (
+      <img
+        className='type__img'
+        src={process.env.PUBLIC_URL + '/tankMastery/master.jpg'}
+        alt='master'
+      />
+    )
+  }
+}
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1
@@ -171,4 +209,11 @@ function stableSort(array, comparator) {
   })
   return stabilizedThis.map((el) => el[0])
 }
-export { descendingComparator, getComparator, stableSort, showType, showNation }
+export {
+  descendingComparator,
+  getComparator,
+  stableSort,
+  showType,
+  showNation,
+  showMastery,
+}

@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import './Search.css'
 import { FaSearch } from 'react-icons/fa'
 import { useGlobalContext } from '../../context'
 function Search() {
   const [radio, setRadio] = useState({ selectedOption: 'Player' })
-  const { setQuery, nameRef, setIsSubmitted } = useGlobalContext()
+  const { setQuery, setIsSubmitted } = useGlobalContext()
 
+  const nameRef = useRef()
   const handleOptionChange = (e) => {
     setRadio({
       selectedOption: e.target.value,
@@ -48,6 +49,7 @@ function Search() {
         <FaSearch className='fa-serach' onClick={handleSubmit} />
         <input
           type='text'
+          id='player'
           placeholder={
             radio.selectedOption === 'Player'
               ? 'Search Players'

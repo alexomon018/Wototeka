@@ -19,20 +19,20 @@ const headCells = [
     id: 'averageDamage',
     numeric: true,
     disablePadding: false,
-    label: 'Average Damage',
+    label: 'Ø Damage',
   },
   {
     id: 'averageXp',
     numeric: true,
     disablePadding: false,
-    label: 'Average Xp',
+    label: 'Ø Xp',
   },
   { id: 'battles', numeric: true, disablePadding: false, label: 'Battles' },
   {
     id: 'victories',
     numeric: true,
     disablePadding: false,
-    label: 'Victories %',
+    label: 'Victories',
   },
   { id: 'maxKills', numeric: true, disablePadding: false, label: 'Max Kills' },
   { id: 'maxXp', numeric: true, disablePadding: false, label: 'Max Xp' },
@@ -76,9 +76,7 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
