@@ -1,15 +1,15 @@
 import { useEffect, useReducer } from 'react'
 import reducer from './reducer'
 import {
-  MAKE_REQUEST_PLAYER_INFO,
-  GET_PLAYER_INFO,
-  ERROR_PLAYER_INFO,
-  MAKE_REQUEST_PLAYER_VEHICLES,
-  GET_PLAYER_VEHICLES,
-  MAKE_REQUEST_PLAYER_VEHICLES_STATS,
-  GET_PLAYER_VEHICLES_STATS,
-  MAKE_REQUEST_ALL_VEHICLES,
-  GET_ALL_VEHICLES,
+  PLAYER_INFO_REQUEST,
+  PLAYER_INFO_SUCCESS,
+  PLAYER_INFO_ERROR,
+  PLAYER_VEHICLES_REQUEST,
+  PLAYER_VEHICLES_SUCCESS,
+  PLAYER_VEHICLE_STATS_REQUEST,
+  PLAYER_VEHICLE_STATS_SUCCESS,
+  VEHICLES_ALL_REQUEST,
+  VEHICLES_ALL_SUCCESS,
 } from './constants'
 const API_ID = `https://api.worldoftanks.eu/wot/account/info/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
 const PLAYER_NAME = `https://api.worldoftanks.eu/wot/account/list/?application_id=${process.env.REACT_APP_APP_ID}&type=exact&search=`
@@ -18,7 +18,6 @@ const ALL_VEHICLES = `https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?app
 const PLAYER_VEHICLE_STATISTIC = `https://api.worldoftanks.eu/wot/tanks/stats/?application_id=${process.env.REACT_APP_APP_ID}&account_id=`
 const useFetch = (urlParams) => {
   const [state, dispatch] = useReducer(reducer, {
-    players: [],
     playerInfo: [],
     playerVehicles: [],
     playerVehiclesStats: [],
@@ -28,7 +27,7 @@ const useFetch = (urlParams) => {
   })
   const getPlayerData = async (urlParams) => {
     try {
-      dispatch({ type: MAKE_REQUEST_PLAYER_INFO })
+      dispatch({ type: PLAYER_INFO_REQUEST })
       const playerId = await fetch(`${PLAYER_NAME}${urlParams}`).then((res) =>
         res.json()
       )
@@ -36,42 +35,42 @@ const useFetch = (urlParams) => {
         `${API_ID}${playerId.data[0].account_id}`
       ).then((res) => res.json())
       dispatch({
-        type: GET_PLAYER_INFO,
+        type: PLAYER_INFO_SUCCESS,
         payload: { playerInfo: playerInfo.data[playerId.data[0].account_id] },
       })
-      dispatch({ type: MAKE_REQUEST_PLAYER_VEHICLES })
+      dispatch({ type: PLAYER_VEHICLES_REQUEST })
       const playerVehicles = await fetch(
         `${PLAYER_VEHICLES}${playerId.data[0].account_id}`
       ).then((res) => res.json())
       dispatch({
-        type: GET_PLAYER_VEHICLES,
+        type: PLAYER_VEHICLES_SUCCESS,
         payload: {
           playerVehicles: playerVehicles.data[playerId.data[0].account_id],
         },
       })
-      dispatch({ type: MAKE_REQUEST_PLAYER_VEHICLES_STATS })
+      dispatch({ type: PLAYER_VEHICLE_STATS_REQUEST })
       const playerVehiclesStats = await fetch(
         `${PLAYER_VEHICLE_STATISTIC}${playerId.data[0].account_id}`
       ).then((res) => res.json())
       dispatch({
-        type: GET_PLAYER_VEHICLES_STATS,
+        type: PLAYER_VEHICLE_STATS_SUCCESS,
         payload: {
           playerVehiclesStats:
             playerVehiclesStats.data[playerId.data[0].account_id],
         },
       })
-      dispatch({ type: MAKE_REQUEST_ALL_VEHICLES })
+      dispatch({ type: VEHICLES_ALL_REQUEST })
       const allVehicles = await fetch(`${ALL_VEHICLES}`).then((res) =>
         res.json()
       )
       dispatch({
-        type: GET_ALL_VEHICLES,
+        type: VEHICLES_ALL_SUCCESS,
         payload: {
           allVehicles: allVehicles.data,
         },
       })
     } catch (error) {
-      dispatch({ type: ERROR_PLAYER_INFO, payload: { error } })
+      dispatch({ type: PLAYER_INFO_ERROR, payload: { error } })
     }
   }
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import './EnhancedTable.css'
-import { useGlobalContext } from '../../context'
+import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -46,9 +46,13 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function EnhancedTable() {
-  const {
-    state: { playerVehiclesStats, allVehicles },
-  } = useGlobalContext()
+  const playerVehiclesStatsInfo = useSelector(
+    (state) => state.playerVehiclesStatsInfo
+  )
+  const { playerVehiclesStats } = playerVehiclesStatsInfo
+
+  const allVehiclesInfo = useSelector((state) => state.allVehiclesInfo)
+  const { allVehicles } = allVehiclesInfo
   const classes = useStyles()
   const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('tankName')

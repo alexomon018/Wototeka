@@ -1,33 +1,33 @@
 import {
-  MAKE_REQUEST_PLAYER_INFO,
-  GET_PLAYER_INFO,
-  ERROR_PLAYER_INFO,
-  MAKE_REQUEST_PLAYER_VEHICLES,
-  GET_PLAYER_VEHICLES,
-  ERROR_PLAYER_VEHICLES,
-  MAKE_REQUEST_PLAYER_VEHICLES_STATS,
-  GET_PLAYER_VEHICLES_STATS,
-  ERROR_PLAYER_VEHICLES_STATS,
-  MAKE_REQUEST_ALL_VEHICLES,
-  GET_ALL_VEHICLES,
-  ERROR_ALL_VEHICLES,
+  PLAYER_INFO_REQUEST,
+  PLAYER_INFO_SUCCESS,
+  PLAYER_INFO_ERROR,
+  PLAYER_VEHICLES_REQUEST,
+  PLAYER_VEHICLES_SUCCESS,
+  PLAYER_VEHICLES_ERROR,
+  PLAYER_VEHICLE_STATS_REQUEST,
+  PLAYER_VEHICLE_STATS_SUCCESS,
+  PLAYER_VEHICLE_STATS_ERROR,
+  VEHICLES_ALL_REQUEST,
+  VEHICLES_ALL_SUCCESS,
+  VEHICLES_ALL_ERROR,
 } from './constants'
 function reducer(state, action) {
-  if (action.type === MAKE_REQUEST_PLAYER_INFO) {
+  if (action.type === PLAYER_INFO_REQUEST) {
     return {
       ...state,
       loading: true,
       playerInfo: [],
     }
   }
-  if (action.type === GET_PLAYER_INFO) {
+  if (action.type === PLAYER_INFO_SUCCESS) {
     return {
       ...state,
       loading: false,
       playerInfo: action.payload.playerInfo,
     }
   }
-  if (action.type === ERROR_PLAYER_INFO) {
+  if (action.type === PLAYER_INFO_ERROR) {
     return {
       ...state,
       loading: false,
@@ -35,21 +35,21 @@ function reducer(state, action) {
       playerInfo: [],
     }
   }
-  if (action.type === MAKE_REQUEST_PLAYER_VEHICLES) {
+  if (action.type === PLAYER_VEHICLES_REQUEST) {
     return {
       ...state,
       loading: true,
       playerVehicles: [],
     }
   }
-  if (action.type === GET_PLAYER_VEHICLES) {
+  if (action.type === PLAYER_VEHICLES_SUCCESS) {
     return {
       ...state,
       loading: false,
       playerVehicles: action.payload.playerVehicles,
     }
   }
-  if (action.type === ERROR_PLAYER_VEHICLES) {
+  if (action.type === PLAYER_VEHICLES_ERROR) {
     return {
       ...state,
       loading: false,
@@ -57,21 +57,21 @@ function reducer(state, action) {
       playerVehicles: [],
     }
   }
-  if (action.type === MAKE_REQUEST_PLAYER_VEHICLES_STATS) {
+  if (action.type === PLAYER_VEHICLE_STATS_REQUEST) {
     return {
       ...state,
       loading: true,
       playerVehiclesStats: [],
     }
   }
-  if (action.type === GET_PLAYER_VEHICLES_STATS) {
+  if (action.type === PLAYER_VEHICLE_STATS_SUCCESS) {
     return {
       ...state,
       loading: false,
       playerVehiclesStats: action.payload.playerVehiclesStats,
     }
   }
-  if (action.type === ERROR_PLAYER_VEHICLES_STATS) {
+  if (action.type === PLAYER_VEHICLE_STATS_ERROR) {
     return {
       ...state,
       loading: false,
@@ -79,21 +79,21 @@ function reducer(state, action) {
       playerVehiclesStats: [],
     }
   }
-  if (action.type === MAKE_REQUEST_ALL_VEHICLES) {
+  if (action.type === VEHICLES_ALL_REQUEST) {
     return {
       ...state,
       loadingVehicles: true,
       allVehicles: [],
     }
   }
-  if (action.type === GET_ALL_VEHICLES) {
+  if (action.type === VEHICLES_ALL_SUCCESS) {
     return {
       ...state,
       loadingVehicles: false,
       allVehicles: action.payload.allVehicles,
     }
   }
-  if (action.type === ERROR_ALL_VEHICLES) {
+  if (action.type === VEHICLES_ALL_ERROR) {
     return {
       ...state,
       loadingVehicles: false,

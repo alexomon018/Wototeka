@@ -1,12 +1,23 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  listPlayerInfos,
+  playerPersonalDataInformation,
+  playerPersonalVehiclesInformation,
+  playerVehiclesStatsInformation,
+} from '../../actions/playerActions'
 import './Search.css'
 import { FaSearch } from 'react-icons/fa'
-import { useGlobalContext } from '../../context'
-function Search() {
+function Search({ setIsSubmited }) {
+  const dispatch = useDispatch()
+  const playerInfo = useSelector((state) => state.playerInfo)
+  const { playerData } = playerInfo
   const [radio, setRadio] = useState({ selectedOption: 'Player' })
-  const { setQuery, setIsSubmitted } = useGlobalContext()
+  const [query, setQuery] = useState('santimania')
+  useEffect(() => {
+    dispatch(listPlayerInfos(query))
+  }, [dispatch, query])
 
-  const nameRef = useRef()
   const handleOptionChange = (e) => {
     setRadio({
       selectedOption: e.target.value,
@@ -14,10 +25,12 @@ function Search() {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    const name = nameRef.current.value
-    setQuery(name)
-    setIsSubmitted(true)
+    dispatch(playerPersonalDataInformation(playerData[0].account_id))
+    dispatch(playerPersonalVehiclesInformation(playerData[0].account_id))
+    dispatch(playerVehiclesStatsInformation(playerData[0].account_id))
+    setIsSubmited(true)
   }
+
   return (
     <div
       className='search__container'
@@ -49,13 +62,14 @@ function Search() {
         <FaSearch className='fa-serach' onClick={handleSubmit} />
         <input
           type='text'
-          id='player'
+          name='q'
+          value={query}
           placeholder={
             radio.selectedOption === 'Player'
               ? 'Search Players'
               : 'Search Clans'
           }
-          ref={nameRef}
+          onChange={(e) => setQuery(e.target.value)}
         />
       </form>
     </div>

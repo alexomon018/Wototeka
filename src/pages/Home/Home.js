@@ -1,22 +1,35 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import Loader from '../../components/Loader/Loader'
 import Search from '../../components/Search/Search'
 import Card from '../../components/Card/Card'
-import { useGlobalContext } from '../../context'
 import EnhancedTable from '../../components/EnhancedTable/EnhancedTable'
 function Home() {
-  const { state, isSubmitted } = useGlobalContext()
+  const [isSubmitted, setIsSubmited] = React.useState(false)
+
+  const playerPersonalDataInfo = useSelector(
+    (state) => state.playerPersonalDataInfo
+  )
+  const playerVehiclesStatsInfo = useSelector(
+    (state) => state.playerVehiclesStatsInfo
+  )
+  const { playerPersonalData } = playerPersonalDataInfo
+
   return (
     <div>
-      <Search />
+      <Search setIsSubmited={setIsSubmited} />
       {isSubmitted &&
-        (state.loading === true ? (
+        (playerPersonalDataInfo.loading === true ? (
           <Loader />
         ) : (
-          <Card data={state.playerInfo} />
+          <Card data={playerPersonalData} />
         ))}
       {isSubmitted &&
-        (state.loadingVehicles === true ? <Loader /> : <EnhancedTable />)}
+        (playerVehiclesStatsInfo.loading === true ? (
+          <Loader />
+        ) : (
+          <EnhancedTable />
+        ))}
     </div>
   )
 }
