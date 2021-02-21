@@ -11,13 +11,12 @@ export const allVehiclesInfo = () => async (dispatch) => {
     dispatch({ type: VEHICLES_ALL_REQUEST })
     const {
       data: { data },
-    } = await axios.get(
-      `https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?application_id=${process.env.REACT_APP_APP_ID}&tank_id=`
-    )
+    } = await axios.get(`/tanks.json`)
     dispatch({
       type: VEHICLES_ALL_SUCCESS,
       payload: data,
     })
+    localStorage.setItem('allVehicles', JSON.stringify(data))
   } catch (error) {
     dispatch({ type: VEHICLES_ALL_ERROR, payload: error })
   }

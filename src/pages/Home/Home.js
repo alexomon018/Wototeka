@@ -7,28 +7,30 @@ import EnhancedTable from '../../components/EnhancedTable/EnhancedTable'
 function Home() {
   const [isSubmitted, setIsSubmited] = React.useState(false)
 
-  const playerPersonalDataInfo = useSelector(
-    (state) => state.playerPersonalDataInfo
-  )
-  const playerVehiclesStatsInfo = useSelector(
-    (state) => state.playerVehiclesStatsInfo
-  )
-  const { playerPersonalData } = playerPersonalDataInfo
+  const playerData = useSelector((state) => state.playerData)
+  const allVehiclesInfo = useSelector((state) => state.allVehiclesInfo)
+  const { allVehicles } = allVehiclesInfo
+
+  const { allPlayerData } = playerData
+  const playerVehiclesStats = allPlayerData[2]
 
   return (
     <div>
       <Search setIsSubmited={setIsSubmited} />
       {isSubmitted &&
-        (playerPersonalDataInfo.loading === true ? (
+        (playerData.loading === true ? (
           <Loader />
         ) : (
-          <Card data={playerPersonalData} />
+          <Card data={allPlayerData[0]} />
         ))}
       {isSubmitted &&
-        (playerVehiclesStatsInfo.loading === true ? (
+        (playerData.loading === true ? (
           <Loader />
         ) : (
-          <EnhancedTable />
+          <EnhancedTable
+            playerVehiclesStats={playerVehiclesStats}
+            allVehicles={allVehicles}
+          />
         ))}
     </div>
   )

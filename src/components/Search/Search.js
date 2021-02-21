@@ -1,34 +1,28 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  listPlayerInfos,
-  playerPersonalDataInformation,
-  playerPersonalVehiclesInformation,
-  playerVehiclesStatsInformation,
-} from '../../actions/playerActions'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { listPlayerData } from '../../actions/playerActions'
+
 import './Search.css'
 import { FaSearch } from 'react-icons/fa'
 function Search({ setIsSubmited }) {
   const dispatch = useDispatch()
-  const playerInfo = useSelector((state) => state.playerInfo)
-  const { playerData } = playerInfo
   const [radio, setRadio] = useState({ selectedOption: 'Player' })
-  const [query, setQuery] = useState('santimania')
-  useEffect(() => {
-    dispatch(listPlayerInfos(query))
-  }, [dispatch, query])
+  const [query, setQuery] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(query)
+    if (query) {
+      dispatch(listPlayerData(query))
+      setIsSubmited(true)
+      setQuery('')
+    }
+  }
 
   const handleOptionChange = (e) => {
     setRadio({
       selectedOption: e.target.value,
     })
-  }
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    dispatch(playerPersonalDataInformation(playerData[0].account_id))
-    dispatch(playerPersonalVehiclesInformation(playerData[0].account_id))
-    dispatch(playerVehiclesStatsInformation(playerData[0].account_id))
-    setIsSubmited(true)
   }
 
   return (
@@ -62,7 +56,6 @@ function Search({ setIsSubmited }) {
         <FaSearch className='fa-serach' onClick={handleSubmit} />
         <input
           type='text'
-          name='q'
           value={query}
           placeholder={
             radio.selectedOption === 'Player'

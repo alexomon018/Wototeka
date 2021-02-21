@@ -1,6 +1,5 @@
 import React from 'react'
 import './EnhancedTable.css'
-import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -45,14 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function EnhancedTable() {
-  const playerVehiclesStatsInfo = useSelector(
-    (state) => state.playerVehiclesStatsInfo
-  )
-  const { playerVehiclesStats } = playerVehiclesStatsInfo
-
-  const allVehiclesInfo = useSelector((state) => state.allVehiclesInfo)
-  const { allVehicles } = allVehiclesInfo
+export default function EnhancedTable({ playerVehiclesStats, allVehicles }) {
   const classes = useStyles()
   const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('tankName')
@@ -93,6 +85,7 @@ export default function EnhancedTable() {
   const stats = playerVehiclesStats.map((singleVehicle) => {
     return singleVehicle
   })
+
   const rows = stats.map((stat) => {
     return createData(
       allVehicles[stat.tank_id].images.contour_icon,
@@ -110,6 +103,7 @@ export default function EnhancedTable() {
       stat.max_xp
     )
   })
+
   const [filterData, setFilterData] = React.useState(rows)
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'

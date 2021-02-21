@@ -1,28 +1,22 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import {
-  playerInfoReducer,
-  playerPersonalDataInfoReducer,
-  playerPersonalVehiclesInfoReducer,
-  playerVehiclesStatsInfoReducer,
-} from './reducers/playerReducers'
+import { playerDataRedcuer } from './reducers/playerReducers'
 import { allVehiclesInfoReducer } from './reducers/vehiclesReducers'
 const reducer = combineReducers({
-  playerInfo: playerInfoReducer,
-  playerPersonalDataInfo: playerPersonalDataInfoReducer,
-  playerPersonalVehiclesInfo: playerPersonalVehiclesInfoReducer,
-  playerVehiclesStatsInfo: playerVehiclesStatsInfoReducer,
+  playerData: playerDataRedcuer,
   allVehiclesInfo: allVehiclesInfoReducer,
 })
 
+const allVehiclesFromStorage = localStorage.getItem('allVehicles')
+  ? JSON.parse(localStorage.getItem('allVehicles'))
+  : []
+
 const initalState = {
-  playerInfo: { playerData: [] },
-  playerPersonalDataInfo: { playerPersonalData: [] },
-  playerPersonalVehiclesInfo: { playerPersonalVehicles: [] },
-  playerVehiclesStatsInfo: { playerVehiclesStats: [] },
-  allVehiclesInfo: { allVehicles: [] },
+  playerData: { allPlayerData: [] },
+  allVehiclesInfo: allVehiclesFromStorage,
 }
+
 const middleware = [thunk]
 const store = createStore(
   reducer,
